@@ -1,1 +1,61 @@
-<p>patient-query works!</p>
+<!-- src/app/components/patient-query/patient-query.component.html -->
+<div class="patient-query-container">
+    <h2>SQL Query Tool</h2>
+    <p class="info-text">
+      Enter a SQL query to search and filter patient records.
+      Only SELECT queries are allowed for security reasons.
+    </p>
+    
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+    
+    <div class="query-form">
+      <div class="form-group">
+        <label for="sqlQuery">SQL Query</label>
+        <textarea 
+          id="sqlQuery" 
+          [(ngModel)]="sqlQuery" 
+          class="form-control"
+          rows="3"
+        ></textarea>
+      </div>
+      
+      <div class="form-actions">
+        <button 
+          (click)="executeQuery()" 
+          class="btn btn-primary"
+          [disabled]="isLoading"
+        >
+          {{ isLoading ? 'Executing...' : 'Execute Query' }}
+        </button>
+      </div>
+    </div>
+    
+    <div *ngIf="isLoading" class="loading-indicator">
+      Executing query...
+    </div>
+    
+    <div *ngIf="queryResults.length === 0 && !isLoading && !errorMessage" class="no-data-message">
+      No results to display. Execute a query to see results.
+    </div>
+    
+    <div *ngIf="queryResults.length > 0" class="query-results">
+      <h3>Query Results ({{ queryResults.length }} rows)</h3>
+      
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th *ngFor="let column of getColumnNames()">{{ column }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of queryResults">
+              <td *ngFor="let column of getColumnNames()">{{ row[column] }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

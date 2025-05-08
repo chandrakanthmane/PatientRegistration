@@ -1,1 +1,40 @@
-<p>patient-list works!</p>
+<!-- src/app/components/patient-list/patient-list.component.html -->
+<div class="patient-list-container">
+    <h2>Registered Patients</h2>
+    
+    <div *ngIf="isLoading" class="loading-indicator">
+      Loading patients...
+    </div>
+    
+    <div *ngIf="!isLoading && patients.length === 0" class="no-data-message">
+      No patients registered yet.
+    </div>
+    
+    <div *ngIf="!isLoading && patients.length > 0" class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Registration Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let patient of patients">
+            <td>{{ patient.id }}</td>
+            <td>{{ patient.firstName }} {{ patient.lastName }}</td>
+            <td>{{ patient.dateOfBirth | date }}</td>
+            <td>{{ patient.gender }}</td>
+            <td>{{ patient.phoneNumber }}</td>
+            <td>{{ patient.email }}</td>
+            <td>{{ patient.registrationDate | date:'medium' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
