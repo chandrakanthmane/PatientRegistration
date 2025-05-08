@@ -1,16 +1,24 @@
 <!-- src/app/components/patient-form/patient-form.component.html -->
-<div class="patient-form-container">
-    <h2>Patient Registration</h2>
-    
-    <div *ngIf="successMessage" class="alert alert-success">
-      {{ successMessage }}
-    </div>
-    
-    <div *ngIf="errorMessage" class="alert alert-danger">
-      {{ errorMessage }}
-    </div>
-    
-    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+<div class="patient-form-container" @fadeIn>
+  <h2>
+    <span class="icon-wrapper">
+      <i class="fas fa-user-plus"></i>
+    </span>
+    Patient Registration
+  </h2>
+  
+  <div *ngIf="successMessage" class="alert alert-success">
+    <i class="fas fa-check-circle"></i> {{ successMessage }}
+  </div>
+  
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+  </div>
+  
+  <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+    <div class="form-section" @sectionAnimation [@sectionAnimation]="{value:'', params:{delay: 0}}">
+      <h3>Personal Information</h3>
+      
       <div class="form-row">
         <div class="form-group">
           <label for="firstName">First Name *</label>
@@ -20,6 +28,7 @@
             formControlName="firstName" 
             class="form-control"
             [class.is-invalid]="patientForm.get('firstName')?.invalid && patientForm.get('firstName')?.touched"
+            placeholder="Enter first name"
           >
           <div *ngIf="patientForm.get('firstName')?.invalid && patientForm.get('firstName')?.touched" class="invalid-feedback">
             First name is required
@@ -34,6 +43,7 @@
             formControlName="lastName" 
             class="form-control"
             [class.is-invalid]="patientForm.get('lastName')?.invalid && patientForm.get('lastName')?.touched"
+            placeholder="Enter last name"
           >
           <div *ngIf="patientForm.get('lastName')?.invalid && patientForm.get('lastName')?.touched" class="invalid-feedback">
             Last name is required
@@ -74,6 +84,10 @@
           </div>
         </div>
       </div>
+    </div>
+    
+    <div class="form-section" @sectionAnimation [@sectionAnimation]="{value:'', params:{delay: 100}}">
+      <h3>Contact Information</h3>
       
       <div class="form-group">
         <label for="address">Address *</label>
@@ -83,6 +97,7 @@
           formControlName="address" 
           class="form-control"
           [class.is-invalid]="patientForm.get('address')?.invalid && patientForm.get('address')?.touched"
+          placeholder="Enter street address"
         >
         <div *ngIf="patientForm.get('address')?.invalid && patientForm.get('address')?.touched" class="invalid-feedback">
           Address is required
@@ -98,6 +113,7 @@
             formControlName="phoneNumber" 
             class="form-control"
             [class.is-invalid]="patientForm.get('phoneNumber')?.invalid && patientForm.get('phoneNumber')?.touched"
+            placeholder="Enter phone number"
           >
           <div *ngIf="patientForm.get('phoneNumber')?.invalid && patientForm.get('phoneNumber')?.touched" class="invalid-feedback">
             Phone number is required
@@ -112,12 +128,17 @@
             formControlName="email" 
             class="form-control"
             [class.is-invalid]="patientForm.get('email')?.invalid && patientForm.get('email')?.touched"
+            placeholder="Enter email address"
           >
           <div *ngIf="patientForm.get('email')?.invalid && patientForm.get('email')?.touched" class="invalid-feedback">
             Valid email is required
           </div>
         </div>
       </div>
+    </div>
+    
+    <div class="form-section" @sectionAnimation [@sectionAnimation]="{value:'', params:{delay: 200}}">
+      <h3>Medical Information</h3>
       
       <div class="form-group">
         <label for="insuranceProvider">Insurance Provider</label>
@@ -126,6 +147,7 @@
           id="insuranceProvider" 
           formControlName="insuranceProvider" 
           class="form-control"
+          placeholder="Enter insurance provider (optional)"
         >
       </div>
       
@@ -135,19 +157,23 @@
           id="medicalHistory" 
           formControlName="medicalHistory" 
           class="form-control"
-          rows="3"
+          rows="4"
+          placeholder="Enter relevant medical history (optional)"
         ></textarea>
       </div>
-      
-      <div class="form-actions">
-        <button 
-          type="submit" 
-          class="btn btn-primary"
-          [disabled]="patientForm.invalid || isSubmitting"
-        >
-          {{ isSubmitting ? 'Registering...' : 'Register Patient' }}
-        </button>
-      </div>
-    </form>
-  </div>
-
+    </div>
+    
+    <div class="form-actions">
+      <button type="reset" class="btn btn-secondary" [disabled]="isSubmitting">
+        <i class="fas fa-undo"></i> Reset
+      </button>
+      <button 
+        type="submit" 
+        class="btn btn-primary"
+        [disabled]="patientForm.invalid || isSubmitting"
+      >
+        <i class="fas fa-save"></i> {{ isSubmitting ? 'Registering...' : 'Register Patient' }}
+      </button>
+    </div>
+  </form>
+</div>

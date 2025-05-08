@@ -4,9 +4,28 @@ import { PatientListComponent } from './components/patient-list/patient-list.com
 import { PatientQueryComponent } from './components/patient-query/patient-query.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: '/register', pathMatch: 'full' },
-    { path: 'register', component: PatientFormComponent },
-    { path: 'patients', component: PatientListComponent },
-    { path: 'query', component: PatientQueryComponent },
-    { path: '**', redirectTo: '/register' }
+    { 
+      path: '', 
+      redirectTo: '/register', 
+      pathMatch: 'full' 
+    },
+    { 
+      path: 'register', 
+      component: PatientFormComponent,
+      data: { animation: 'RegisterPage' } 
+    },
+    { 
+      path: 'patients', 
+      component: PatientListComponent,
+      data: { animation: 'PatientsPage' } 
+    },
+    { 
+      path: 'query', 
+      component: PatientQueryComponent,
+      data: { animation: 'QueryPage' } 
+    },
+    { 
+      path: '**', 
+      redirectTo: '/register' 
+    }
 ];

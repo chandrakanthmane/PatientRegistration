@@ -1,24 +1,34 @@
 <!-- src/app/app.component.html -->
 <div class="app-container">
   <header>
-    <h1>{{ title }}</h1>
+    <div class="container">
+      <h1>{{ title }}</h1>
+      <p class="tagline">A modern patient management system</p>
+    </div>
   </header>
   
   <div *ngIf="!dbReady" class="loading-indicator">
-    Initializing database... Please wait.
+    <div class="spinner"></div>
+    <p>Initializing database... Please wait.</p>
   </div>
   
   <div *ngIf="dbReady" class="main-content">
     <nav>
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['register']" routerLinkActive="active">Register Patient</a>
+          <a class="nav-link" [routerLink]="['register']" routerLinkActive="active">
+            <i class="fas fa-user-plus"></i> Register Patient
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['patients']" routerLinkActive="active">Patient List</a>
+          <a class="nav-link" [routerLink]="['patients']" routerLinkActive="active">
+            <i class="fas fa-users"></i> Patient List
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['query']" routerLinkActive="active">SQL Query</a>
+          <a class="nav-link" [routerLink]="['query']" routerLinkActive="active">
+            <i class="fas fa-database"></i> SQL Query
+          </a>
         </li>
       </ul>
     </nav>
@@ -29,6 +39,9 @@
   </div>
   
   <footer>
-    <p>Patient Registration App using PGLite - {{ getCurrentYear() }}</p>
+    <div class="container">
+      <p>Patient Registration App - {{ getCurrentYear() }}</p>
+      <p class="footer-credits">Powered by IndexedDB | Designed with ❤️</p>
+    </div>
   </footer>
 </div>

@@ -1,61 +1,93 @@
 <!-- src/app/components/patient-query/patient-query.component.html -->
-<div class="patient-query-container">
-    <h2>SQL Query Tool</h2>
-    <p class="info-text">
-      Enter a SQL query to search and filter patient records.
-      Only SELECT queries are allowed for security reasons.
-    </p>
-    
-    <div *ngIf="errorMessage" class="alert alert-danger">
-      {{ errorMessage }}
+<div class="patient-query-container" @fadeIn>
+  <h2>
+    <span class="icon-wrapper">
+      <i class="fas fa-database"></i>
+    </span>
+    SQL Query Tool
+  </h2>
+  
+  <div class="info-text">
+    <i class="fas fa-info-circle"></i>
+    <div>
+      <p><strong>Enter a SQL query to search and filter patient records.</strong></p>
+      <p>Only SELECT queries are allowed for security reasons.</p>
     </div>
-    
-    <div class="query-form">
-      <div class="form-group">
-        <label for="sqlQuery">SQL Query</label>
+  </div>
+  
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+  </div>
+  
+  <div class="query-form">
+    <div class="form-group">
+      <label for="sqlQuery">SQL Query</label>
+      <div class="code-editor">
         <textarea 
           id="sqlQuery" 
           [(ngModel)]="sqlQuery" 
-          class="form-control"
-          rows="3"
+          class="form-control code-area"
+          rows="5"
+          spellcheck="false"
         ></textarea>
       </div>
+    </div>
+    
+    <div class="query-examples">
+      <p><strong>Example Queries:</strong></p>
+      <div class="example-buttons">
+        <button (click)="useExample('all')" class="example-btn">All patients</button>
+        <button (click)="useExample('orderByDate')" class="example-btn">Order by date</button>
+        <button (click)="useExample('searchName')" class="example-btn">Search by name</button>
+        <button (click)="useExample('limit')" class="example-btn">Limit results</button>
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <button 
+        (click)="executeQuery()" 
+        class="btn btn-primary"
+        [disabled]="isLoading"
+      >
+        <i class="fas fa-play"></i> {{ isLoading ? 'Executing...' : 'Execute Query' }}
+      </button>
+    </div>
+  </div>
+  
+  <div *ngIf="isLoading" class="loading-indicator">
+    <div class="spinner"></div>
+    <p>Executing query...</p>
+  </div>
+  
+  <div *ngIf="queryResults.length === 0 && !isLoading && !errorMessage" class="no-data-message">
+    <i class="fas fa-search no-data-icon"></i>
+    <p>No results to display. Execute a query to see results.</p>
+  </div>
+  
+  <div *ngIf="queryResults.length > 0" class="query-results">
+    <div class="results-header">
+      <h3>Query Results <span class="result-count">{{ queryResults.length }} rows</span></h3>
       
-      <div class="form-actions">
-        <button 
-          (click)="executeQuery()" 
-          class="btn btn-primary"
-          [disabled]="isLoading"
-        >
-          {{ isLoading ? 'Executing...' : 'Execute Query' }}
+      <div class="export-options">
+        <button (click)="exportToCSV()" class="btn-link">
+          <i class="fas fa-file-csv"></i> Export CSV
         </button>
       </div>
     </div>
     
-    <div *ngIf="isLoading" class="loading-indicator">
-      Executing query...
-    </div>
-    
-    <div *ngIf="queryResults.length === 0 && !isLoading && !errorMessage" class="no-data-message">
-      No results to display. Execute a query to see results.
-    </div>
-    
-    <div *ngIf="queryResults.length > 0" class="query-results">
-      <h3>Query Results ({{ queryResults.length }} rows)</h3>
-      
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th *ngFor="let column of getColumnNames()">{{ column }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let row of queryResults">
-              <td *ngFor="let column of getColumnNames()">{{ row[column] }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th *ngFor="let column of getColumnNames()">{{ column }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of queryResults">
+            <td *ngFor="let column of getColumnNames()">{{ row[column] }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+</div>

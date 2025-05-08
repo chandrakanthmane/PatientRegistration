@@ -1,16 +1,127 @@
 <!-- src/app/components/patient-list/patient-list.component.html -->
 <div class="patient-list-container">
-    <h2>Registered Patients</h2>
+  <div class="list-header">
+    <h2>
+      <span class="icon-wrapper">
+        <i class="fas fa-users"></i>
+      </span>
+      Registered Patients
+    </h2>
     
-    <div *ngIf="isLoading" class="loading-indicator">
-      Loading patients...
+    <div class="filter-controls">
+      <div class="search-box">
+        <i class="fas fa-search search-icon"></i>
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (input)="applyFilter()"
+          placeholder="Search patients..."
+          class="search-input"
+        >
+        <button *ngIf="searchTerm" (click)="clearSearch()" class="clear-search">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <!-- View toggle buttons moved to top -->
+      <div class="view-toggle">
+        <button (click)="switchViewMode('card')" class="btn-icon" [class.active]="viewMode === 'card'">
+          <i class="fas fa-th-large"></i>
+        </button>
+        <button (click)="switchViewMode('table')" class="btn-icon" [class.active]="viewMode === 'table'">
+          <i class="fas fa-table"></i>
+        </button>
+      </div>
     </div>
-    
-    <div *ngIf="!isLoading && patients.length === 0" class="no-data-message">
-      No patients registered yet.
+  </div>
+  
+  <div *ngIf="isLoading" class="loading-indicator">
+    <div class="spinner"></div>
+    <p>Loading patients...</p>
+  </div>
+  
+  <div *ngIf="!isLoading && filteredPatients.length === 0" class="no-data-message">
+    <i class="fas fa-user-slash no-data-icon"></i>
+    <p>No patients registered yet.</p>
+    <button [routerLink]="['/register']" class="btn btn-primary add-patient-btn">
+      <i class="fas fa-user-plus"></i> Register New Patient
+    </button>
+  </div>
+  
+  <!-- Card View -->
+  <div *ngIf="!isLoading && filteredPatients.length > 0 && viewMode === 'card'" 
+       class="card-container" 
+       @fadeAnimation
+       @cardAnimation>
+    <div class="patient-card" *ngFor="let patient of filteredPatients; let i = index">
+      <div class="patient-card-header">
+        <h3>{{ patient.firstName }} {{ patient.lastName }}</h3>
+        <span class="patient-id">ID: {{ patient.id }}</span>
+      </div>
+      
+      <div class="patient-card-body">
+        <div class="patient-info">
+          <div class="info-item">
+            <i class="fas fa-birthday-cake"></i>
+            <span>{{ patient.dateOfBirth | date }}</span>
+          </div>
+          
+          <div class="info-item">
+            <i class="fas fa-venus-mars"></i>
+            <span>{{ patient.gender }}</span>
+          </div>
+          
+          <div class="info-item">
+            <i class="fas fa-phone"></i>
+            <span>{{ patient.phoneNumber }}</span>
+          </div>
+          
+          <div class="info-item">
+            <i class="fas fa-envelope"></i>
+            <span>{{ patient.email }}</span>
+          </div>
+          
+          <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ patient.address }}</span>
+          </div>
+          
+          <div class="info-item">
+            <i class="fas fa-calendar-check"></i>
+            <span>Registered: {{ patient.registrationDate | date:'medium' }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="patient-card-footer">
+        <button (click)="toggleDetails(patient)" class="btn-link">
+          {{ expandedPatientId === patient.id ? 'Hide Details' : 'View Details' }}
+          <i class="fas" [ngClass]="{'fa-chevron-down': expandedPatientId !== patient.id, 'fa-chevron-up': expandedPatientId === patient.id}"></i>
+        </button>
+      </div>
+      
+      <div class="patient-details" *ngIf="expandedPatientId === patient.id">
+        <div class="detail-section">
+          <h4>Insurance Information</h4>
+          <p *ngIf="patient.insuranceProvider">{{ patient.insuranceProvider }}</p>
+          <p *ngIf="!patient.insuranceProvider" class="text-muted">No insurance information provided</p>
+        </div>
+        
+        <div class="detail-section">
+          <h4>Medical History</h4>
+          <p *ngIf="patient.medicalHistory">{{ patient.medicalHistory }}</p>
+          <p *ngIf="!patient.medicalHistory" class="text-muted">No medical history provided</p>
+        </div>
+      </div>
     </div>
-    
-    <div *ngIf="!isLoading && patients.length > 0" class="table-responsive">
+  </div>
+  
+  <!-- Table View -->
+  <div *ngIf="!isLoading && filteredPatients.length > 0 && viewMode === 'table'" 
+       class="table-view" 
+       @fadeAnimation
+       @rowAnimation>
+    <div class="table-responsive">
       <table class="table table-striped">
         <thead>
           <tr>
@@ -24,7 +135,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let patient of patients">
+          <tr *ngFor="let patient of filteredPatients">
             <td>{{ patient.id }}</td>
             <td>{{ patient.firstName }} {{ patient.lastName }}</td>
             <td>{{ patient.dateOfBirth | date }}</td>
@@ -37,4 +148,4 @@
       </table>
     </div>
   </div>
-
+</div>
