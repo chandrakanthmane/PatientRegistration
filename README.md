@@ -6,22 +6,63 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Features
+## Patient Registration
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+User-friendly form for adding new patient records
+Comprehensive form validation
+Intuitive UI with clear feedback messages
+Multi-section layout for organizing patient information
 
-## Build
+## Patient Listing
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Dual view modes (card and table) for patient records
+Search functionality to filter patients by name, email, or phone
+Interactive patient cards with expandable details
+Smooth animations for a polished user experience
 
-## Running unit tests
+## SQL Query Tool
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Execute SQL-like queries to filter and retrieve patient data
+Pre-defined query examples for common operations
+CSV export functionality for query results
+Syntax highlighting and error handling
 
-## Running end-to-end tests
+## Offline Functionality
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+All data persists across page refreshes using IndexedDB
+No server dependency - everything runs in the browser
+Multi-tab synchronization for real-time updates
 
-## Further help
+## Technology Stack
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Framework: Angular 18 (Standalone Components)
+Database: IndexedDB (with PGLite-compatible API)
+Styling: Custom SCSS with CSS variables
+Animations: Angular Animations
+Cross-tab Communication: BroadcastChannel API
+Deployment: Netlify
+
+## Setup Instructions
+## Prerequisites
+
+Node.js (v16 or higher)
+npm (v8 or higher)
+
+## Installation
+
+Clone the repository:
+bashgit clone https://github.com/chandrakanthmane/patient-registration-app.git
+cd patient-registration-app
+
+## Install dependencies:
+npm install
+
+Start the development server: ng serve
+
+Access the application at: http://localhost:4200
+
+
+## Building for Production
+To build the application for production: ng build --configuration production
+The build artifacts will be stored in the dist/ directory.
